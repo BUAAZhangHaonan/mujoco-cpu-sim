@@ -2,7 +2,7 @@ import numpy as np
 import mujoco
 from tqdm import tqdm
 from typing import List, Dict, Tuple
-from .geometry import HexPackedInitializer, SpatialPacker, GeometryCalculator
+from .geometry import HexPackedInitializer, SpatialPacker
 from .utils import MuJoCoUtils, ModelAnalyzer
 
 
@@ -79,6 +79,7 @@ class StateInitializer:
 
         for idx, info in enumerate(body_info):
             bid = info["id"]
+            from geometry import GeometryCalculator
             
             geo_calc = GeometryCalculator(self.model)
             aabb, _, r = geo_calc.compute_body_bounds(bid)

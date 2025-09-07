@@ -27,8 +27,8 @@ class MuJoCoSimulationManager:
 
         # 初始化组件
         self.model_loader = ModelLoader()
-        self.model: mujoco.MjModel = None
-        self.data: mujoco.MjData = None
+        self.model = None
+        self.data = None
         self.body_info = None
 
     @staticmethod
@@ -240,6 +240,7 @@ class MuJoCoSimulationManager:
             ]
         else:
             # 多进程模式
+            # 确定实际的replicate数量：优先使用配置，否则从XML读取
             actual_replicate_count = (
                 self.config.model.replicate_count
                 if self.config.model.replicate_count is not None
@@ -298,14 +299,30 @@ class MuJoCoSimulationManager:
     def run(self):
         """运行完整的仿真流程"""
         try:
+            # 检查是否需要处理XML文件
+            if (
+                hasattr(self.config_manager, "args")
+                and self.config_manager.args.process_xml
+            ):
+                self.process_xml_files()
+                return
+
+            # 设置环境
             xml_path, part_name = self.setup()
+
+            # 生成初始状态
             qpos_batch, qvel_batch = self.generate_initial_states(part_name)
+
+            # 运行仿真
             results, elapsed = self.run_simulation(
                 xml_path, qpos_batch, qvel_batch, part_name
             )
+
+            # 打印结果
             self.print_results(results, elapsed)
+
         finally:
-            self.cleanup()
+            # 清理临时XML文件
             save_modified_xml = getattr(self.config.model, "save_modified_xml", False)
             if (
                 hasattr(self, "_temp_xml_path")
@@ -318,14 +335,6 @@ class MuJoCoSimulationManager:
                         print(f"已删除临时XML文件: {self._temp_xml_path}")
                 except Exception as e:
                     print(f"删除临时XML文件时出错: {e}")
-                    
-    def cleanup(self):
-        try:
-            import glfw
-            if glfw.get_current_context():
-                glfw.terminate()
-        except Exception as e:
-            print(f"GLFW 清理失败: {e}")
 
 
 def main():

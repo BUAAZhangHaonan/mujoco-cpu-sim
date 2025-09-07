@@ -25,10 +25,10 @@ class ModelLoader:
     def resolve_model_path(model_path: str) -> str:
         """解析模型路径"""
         try:
-            # 获取当前脚本所在目录 (src/core)
+            # 获取当前脚本所在目录 (0821/)
             script_dir = os.path.dirname(os.path.realpath(__file__))
-            # 获取项目根目录 (repo root)
-            project_root = os.path.dirname(os.path.dirname(script_dir))
+            # 获取项目根目录 (mjwarp-test/)
+            project_root = os.path.dirname(script_dir)
             return os.path.join(project_root, model_path)
         except NameError:
             return model_path

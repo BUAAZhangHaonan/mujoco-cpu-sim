@@ -115,7 +115,7 @@ class ConfigManager:
 
         # 配置文件路径
         parser.add_argument(
-            "--config", type=str, default="config.yaml", help="配置文件路径"
+            "--config", type=str, default="0821/config.yaml", help="配置文件路径"
         )
 
         # 模型相关

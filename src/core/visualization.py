@@ -6,8 +6,8 @@ import os
 import tqdm
 from typing import List, Dict, Tuple, Optional
 from datetime import datetime
-from .geometry import GeometryCalculator
-from .simulation import PoseExporter
+from geometry import GeometryCalculator
+from simulation import PoseExporter
 
 
 class Visualizer:

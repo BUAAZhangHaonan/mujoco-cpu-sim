@@ -66,7 +66,7 @@ class PoseExporter:
         导出该场景所有目标 body 的最终位姿（xyz + quat[wxyz]），顺序按 qpos_addr 升序稳定。
         文件路径：out_root/<part_name>/<replicate_count>/scene_{scene_idx:06d}.npy
         """
-        from .utils import ModelAnalyzer
+        from utils import ModelAnalyzer
 
         analyzer = ModelAnalyzer(model)
         body_info = analyzer.find_target_bodies(part_name)
@@ -115,7 +115,7 @@ class MultiprocessSimulator:
         replicate_count: int,
     ) -> Dict:
         """工作进程函数"""
-        from .model_loader import ModelLoader
+        from model_loader import ModelLoader
 
         loader = ModelLoader()
         model, data = loader.load_model(xml_path)
