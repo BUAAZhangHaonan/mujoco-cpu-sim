@@ -1,0 +1,53 @@
+# MuJoCo Multi-process Simulation Configuration
+model:
+  path: "assets/mjcf/scenes/ec8_scene_replicate.xml"
+  part_name: null  # 未提供时从文件名推断
+  replicate_count: null  # 动态覆盖XML中的replicate数量
+  save_modified_xml: false # 决定是否保存修改后的XML文件
+
+simulation:
+  steps: 4000
+  batch: 64
+  seed: 0
+
+multiprocessing:
+  workers: 16  # -1 for all CPUs, 0 for single process
+
+initialization:
+  # 六角密堆参数
+  xy_extent: [-0.5, 0.5]
+  z_low: 0.05
+  layer_gap: 0.003
+  min_clearance: 0.001
+  jitter_frac: 0.35
+  
+  # 姿态控制
+  allow_3d_rot: true  # 允许三轴随机旋转
+  yaw_only: false  # 仅绕Z轴旋转
+  
+  # 拟合模式
+  fit_mode: "sphere"  # "sphere" 或 "aabb"
+
+rendering:
+  viewer: false
+  save_images: false
+  image_resolution:
+    width: 1920
+    height: 1080
+
+paths:
+  output_dir: "images/debug/0825"
+  npy_out_dir: "output/npy/0825"
+  viz_out_dir: "images/debug/0825"
+
+# XML处理配置
+xml_processing:
+  # add_orign_obj_to_xml.py 相关配置
+  mesh_scale: [0.001, 0.001, 0.001]
+  models_dir: "assets/mjcf/models"
+  
+  # change_replicate_xml_ground.py 相关配置
+  scenes_dir: "assets/mjcf/scenes"
+  texture_width: 100
+  texture_height: 100
+  ground_size: "1 1 0.1"
